@@ -14,7 +14,6 @@ pipeline{
         stage('Testing Environment'){
             steps{
             sh 'firebase deploy -P kelownatrails-testing-6cd41 --token "$FIREBASE_DEPLOY_TOKEN"'
-            input message: 'After testing. Do you want to continue with Staging Environment? (Click "Proceed" to continue)'
             }
         } 
         stage('Staging Environment'){
