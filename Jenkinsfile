@@ -1,31 +1,38 @@
-pipeline{
+pipeline {
     agent any
+
     environment {
-    FIREBASE_DEPLOY_TOKEN = credentials('firebase-token')
+        FIREBASE_TOKEN = credentials('firebase-token') // Fetch the token from Jenkins credentials
     }
 
- stages{
-        stage('Building'){
-            steps{
-           // sh 'npm install -g firebase-tools'
-                echo 'Biulding...'
+    stages {
+        stage('Building') {
+            steps {
+                echo 'Installing Firebase tools...'
+                sh 'npm install -g firebase-tools'
             }
-        } 
-        stage('Testing Environment'){
-            steps{
-            sh 'firebase deploy -P kelownatrails-testing-6cd41 --token "$FIREBASE_DEPLOY_TOKEN"'
-            }
-        } 
-        stage('Staging Environment'){
-            steps{
-             sh 'firebase deploy -P kelownatrails-staging-a1f5d --token "$FIREBASE_DEPLOY_TOKEN"'
-            }
-        } 
-        stage('Production Environment'){
-            steps{
-            sh 'firebase deploy -P kelownatrails-production-455c7 --token "$FIREBASE_DEPLOY_TOKEN"'
-            }
-        } 
-    }
+        }
 
+        stage('Testing') {
+            steps {
+                echo 'Deploying to Firebase Testing Environment...'
+                sh 'firebase deploy --project kelownatrails-testing-6cd41 --token $FIREBASE_TOKEN'
+            }
+        }
+
+        stage('Staging') {
+            steps {
+                echo 'Deploying to Firebase Staging Environment...'
+                sh 'firebase deploy --project kelownatrails-staging-a1f5d --token $FIREBASE_TOKEN'
+            }
+        }
+
+        stage('Production') {
+            steps {
+                echo 'Deploying to Firebase Production Environment...'
+                sh 'firebase deploy --project kelownatrails-production-455c7 --token $FIREBASE_TOKEN'
+            }
+        }
+    }
 }
+
