@@ -9,7 +9,7 @@ pipeline {
         stage('Building') {
             steps {
                 echo 'Installing Firebase tools...'
-                sh 'sudo npm install -g firebase-tools'
+                sh 'npm install -g firebase-tools'
             }
         }
 
